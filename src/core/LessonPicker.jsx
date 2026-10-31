@@ -19,12 +19,15 @@ export default function LessonPicker({ app, onClose }) {
   const lessons = app.lessons || [];
 
   return (
-    <div className="absolute inset-0 z-40 bg-black/60 backdrop-blur-sm flex flex-col justify-end animate-fadeIn">
+    <div
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex flex-col justify-end sm:justify-center sm:items-center p-0 sm:p-4 animate-fadeIn select-none"
+      dir={lang === 'ur' ? 'rtl' : 'ltr'}
+    >
       {/* Background click dismisses */}
-      <div className="flex-1" onClick={onClose} />
+      <div className="absolute inset-0 -z-10" onClick={onClose} />
 
-      {/* Slide-up Bottom Sheet */}
-      <div className="bg-slate-900 border-t border-slate-700/80 rounded-t-[32px] p-5 max-h-[80%] flex flex-col shadow-2xl text-white animate-slideUp">
+      {/* Slide-up Bottom Sheet on mobile / Centered modal on web */}
+      <div className="bg-slate-900 border-t sm:border border-slate-700/80 rounded-t-[32px] sm:rounded-3xl p-5 w-full sm:max-w-lg max-h-[85vh] flex flex-col shadow-2xl text-white animate-slideUp">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-white/10">
           <div className="flex items-center gap-3">

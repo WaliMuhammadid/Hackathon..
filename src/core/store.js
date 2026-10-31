@@ -16,6 +16,7 @@ const getInitialProgress = () => {
 export const useStore = create((set, get) => ({
   lang: 'en', // 'en' | 'ur'
   mode: 'guided', // 'guided' | 'try' | 'test'
+  viewMode: 'web', // 'web' | 'phone'
   activeApp: null, // appId or null
   activeLesson: null, // lesson object or null
   stepIndex: 0,
@@ -37,6 +38,9 @@ export const useStore = create((set, get) => ({
   setLang: (lang) => set({ lang }),
   toggleLang: () => set((state) => ({ lang: state.lang === 'en' ? 'ur' : 'en' })),
   setMode: (mode) => set({ mode }),
+  setViewMode: (viewMode) => set({ viewMode }),
+  toggleViewMode: () =>
+    set((state) => ({ viewMode: state.viewMode === 'web' ? 'phone' : 'web' })),
   setShowProgress: (show) => set({ showProgress: show }),
 
   toggleVoice: () => {

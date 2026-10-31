@@ -57,9 +57,14 @@ export default function ProgressScreen({ onClose }) {
   ];
 
   return (
-    <div className="absolute inset-0 z-50 bg-slate-950 flex flex-col text-white overflow-hidden">
-      {/* Top Header */}
-      <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
+    <div
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-6 animate-fadeIn select-none"
+      dir={lang === 'ur' ? 'rtl' : 'ltr'}
+    >
+      <div className="absolute inset-0 -z-10" onClick={onClose} />
+      <div className="bg-slate-950 border border-slate-800 rounded-3xl w-full sm:max-w-2xl max-h-[90vh] flex flex-col text-white overflow-hidden shadow-2xl animate-slideUp">
+        {/* Top Header */}
+        <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
           <Award className="w-5 h-5 text-amber-400" />
           <h2 className={`text-lg font-bold ${lang === 'ur' ? 'font-urdu' : ''}`}>
@@ -194,5 +199,6 @@ export default function ProgressScreen({ onClose }) {
         </div>
       </div>
     </div>
+  </div>
   );
 }

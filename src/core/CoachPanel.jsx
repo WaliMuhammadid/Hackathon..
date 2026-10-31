@@ -39,9 +39,9 @@ export default function CoachPanel({
   };
 
   return (
-    <div className="absolute bottom-0 inset-x-0 p-3 pointer-events-auto z-50">
+    <div className="absolute bottom-0 inset-x-0 p-3 pointer-events-auto z-50 flex justify-center">
       <div
-        className={`rounded-2xl p-4 shadow-2xl backdrop-blur-md border transition-all duration-300 ${
+        className={`w-full max-w-2xl rounded-2xl p-4 shadow-2xl backdrop-blur-md border transition-all duration-300 ${
           warn
             ? 'bg-red-950/95 text-white border-red-500/60 shadow-red-900/40'
             : wrongTapAlert

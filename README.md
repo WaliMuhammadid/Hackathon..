@@ -1,13 +1,13 @@
-# Practice Phone 📱🇵🇰
+# Practice Web & Phone Simulator 🌐📱🇵🇰
 
-**A Safe, Guided Phone Simulator for Parents and Grandparents in Pakistan**  
+**A Safe, Guided Web Portal & Simulator for Parents and Grandparents in Pakistan**  
 *Hackathon: Build4Better — NED University of Engineering & Technology*
 
 ---
 
 ## 👥 Team & Roles
 
-- **Member 1 (Core Lead)**: Shell, Coach Engine, Store, I18n, App Registry, Home & Progress Screens (`src/core/**`)
+- **Member 1 (Core Lead)**: Web & Phone Shells, Coach Engine, Store, I18n, App Registry, Home & Progress Screens (`src/core/**`)
 - **Member 2**: WhatsApp, Instagram, Facebook (`src/apps/whatsapp`, `src/apps/instagram`, `src/apps/facebook`)
 - **Member 3**: Islamic Banking (`src/apps/meezan`)
 - **Member 4**: SMS Scam Spotter & Video Call (`src/apps/sms`, `src/apps/videocall`)
@@ -16,19 +16,23 @@
 
 ## 🎯 Target User & The Problem
 
-In Pakistan, millions of elderly parents and grandparents struggle to navigate touchscreens, fear accidentally losing money, getting locked out of accounts, or falling prey to ubiquitous SMS/WhatsApp scams (e.g. fake Benazir Income Support Program prizes). They hesitate to practice on real devices because a mistaken tap could send embarrassing messages or delete data.
+In Pakistan, millions of elderly parents and grandparents struggle to navigate touchscreens and web portals, fear accidentally losing money, getting locked out of accounts, or falling prey to ubiquitous SMS/WhatsApp scams (e.g. fake Benazir Income Support Program prizes). They hesitate to practice on real devices because a mistaken tap could send embarrassing messages or delete data.
 
 **The Solution:**  
-*Practice Phone* provides a completely risk-free, sandboxed smartphone simulator. Learners practice high-stakes everyday actions (sending voice notes, transferring money on Meezan Digital, blocking lottery scams, answering family video calls) with an AI/interactive **COACH** that highlights exactly what to tap next via bilingual voice and text narration (Urdu & English).
+*Practice Web* provides a completely risk-free, sandboxed digital learning portal. Learners practice high-stakes everyday actions (sending voice notes, transferring money on Meezan Digital, blocking lottery scams, answering family video calls) with an interactive **COACH** that highlights exactly what to tap next via bilingual voice and text narration (Urdu & English).
 
 ---
 
 ## 🚀 Key Features
 
-### 1. Robust Phone Shell (`PhoneShell.jsx`)
-- **Centred 390×844 Mobile Viewport**: Dynamic Island notch, realistic status bar with live time, Wi-Fi, battery, and signal indicators.
-- **Adaptive Responsive Design**: On screens `< 500px`, seamlessly expands to full-screen without bezels for natural mobile usage.
-- **System Navigation Bar**: Persistent Home, Back, and Session Restart controls.
+### 1. Dual-Mode Responsive Experience (`WebShell.jsx` & `WebNavbar.jsx`)
+- **Modern Full Web Layout (Default)**:
+  - Clean web header with direct navigation, Mode Selector (Guided, Try, Test), Voice Audio controls, Language switch (Urdu/English), and Progress tracking.
+  - Responsive Web Dashboard with friendly hero section, quick stats (Stars, Badges, Completed lessons), recommended lesson card, and a 6-app responsive grid.
+  - Centered web application container (`max-w-4xl`) with realistic web app window headers for desktop comfort and zero eye-strain.
+- **Phone Simulator Mode**:
+  - Centered 390×844 mobile phone viewport with Dynamic Island notch, realistic status bar (Wi-Fi, battery, signal), and persistent bottom system navigation controls.
+  - One-click toggle between **Web View** and **Phone View** anytime.
 
 ### 2. High-Tech Coach Engine
 - **Spotlight Mask (`Spotlight.jsx`)**: Darkens background elements while creating a precision cutout around the target `[data-coach="..."]` element with animated pulsing rings and pointer indicators. Dynamically adjusts via `MutationObserver` and resize/scroll listeners.

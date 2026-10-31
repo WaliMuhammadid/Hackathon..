@@ -1,6 +1,6 @@
 import React from 'react';
-import PhoneShell from './core/PhoneShell';
+import WebShell from './core/WebShell';
 
 export default function App() {
-  return <PhoneShell />;
+  return <WebShell />;
 }
