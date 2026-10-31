@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { COLORS } from './colors';
 import { useT } from '../../core/i18n';
+import { useStore } from '../../core/store';
 import {
   Search,
   MoreVertical,
@@ -26,6 +27,7 @@ import {
 
 export default function WhatsAppApp({ onExit }) {
   const t = useT();
+  const { activeLesson } = useStore();
   const [activeTab, setActiveTab] = useState('chats'); // 'chats' | 'updates' | 'communities' | 'calls'
   const [selectedChat, setSelectedChat] = useState(null);
   const [inputText, setInputText] = useState('');
@@ -224,7 +226,8 @@ export default function WhatsAppApp({ onExit }) {
           </div>
 
           {/* Controls */}
-          <div className="flex items-center justify-around pb-6">
+          <div className={`flex items-center justify-around ${activeLesson ? 'pb-60' : 'pb-6'}`}>
+
             <button className="p-3 bg-slate-800 rounded-full">
               <Mic className="w-6 h-6" />
             </button>
@@ -353,7 +356,8 @@ export default function WhatsAppApp({ onExit }) {
 
           {/* Fake Gallery Picker Modal */}
           {showGallery && (
-            <div className="p-3 bg-slate-900 text-white border-t border-slate-700">
+            <div className={`p-3 bg-slate-900 text-white border-t border-slate-700 ${activeLesson ? 'pb-60' : ''}`}>
+
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold">
                   {t({ en: 'Choose Photo to Send', ur: 'تصویر منتخب کریں' })}
@@ -431,7 +435,8 @@ export default function WhatsAppApp({ onExit }) {
           )}
 
           {/* Bottom Chat Input Bar */}
-          <div className="p-2 bg-slate-200/90 flex items-center gap-2 shrink-0">
+          <div className={`p-2 bg-slate-200/90 flex items-center gap-2 shrink-0 ${activeLesson ? 'pb-60' : ''}`}>
+
             <div className="flex-1 bg-white rounded-full px-3 py-2 flex items-center gap-2 shadow-sm">
               <Smile className="w-5 h-5 text-slate-400 shrink-0" />
               <input
@@ -510,7 +515,8 @@ export default function WhatsAppApp({ onExit }) {
             </div>
 
             {/* Chats List */}
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-100 bg-white">
+            <div className={`flex-1 overflow-y-auto divide-y divide-slate-100 bg-white ${activeLesson ? 'pb-60' : ''}`}>
+
               {chats.map((c) => (
                 <div
                   key={c.id}
@@ -543,7 +549,8 @@ export default function WhatsAppApp({ onExit }) {
           </div>
 
           {/* Floating Action Button for New Chat */}
-          <div className="absolute bottom-16 right-4 z-20">
+          <div className={`absolute right-4 z-20 ${activeLesson ? 'bottom-64' : 'bottom-16'}`}>
+
             <button
               type="button"
               className="w-13 h-13 rounded-2xl bg-[#00a884] text-white flex items-center justify-center shadow-xl active:scale-95 transition"
@@ -553,7 +560,8 @@ export default function WhatsAppApp({ onExit }) {
           </div>
 
           {/* Bottom WhatsApp Navigation Bar (Chats, Updates, Communities, Calls) */}
-          <div className="h-14 w-full bg-white border-t border-slate-200 flex items-center justify-around px-2 text-[10px] font-semibold text-slate-600 shrink-0">
+          <div className={`h-14 w-full bg-white border-t border-slate-200 flex items-center justify-around px-2 text-[10px] font-semibold text-slate-600 shrink-0 ${activeLesson ? 'pb-60 h-auto' : ''}`}>
+
             <button
               type="button"
               onClick={() => setActiveTab('chats')}
