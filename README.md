@@ -1,82 +1,105 @@
-# Practice Phone 📱
+# Practice Phone 📱🇵🇰
 
-A safe, guided practice phone simulator designed for people who didn't grow up with technology (parents and grandparents) in Pakistan. Built for the **Build4Better Hackathon at NED University**.
-
-Everything in this application is **100% simulated** — no real accounts, phone numbers, or bank transfers are used.
-
----
-
-## 🌟 Key Features
-
-1. **Realistic 390x844 Mobile Viewport Shell**
-   - Simulated dynamic island notch, network/battery status bar, and phone navigation controls.
-   - Global language switcher: **Urdu (اردو)** and **English** with RTL support and Nastaliq Urdu typography.
-
-2. **Interactive Coach Engine**
-   - **Visual Spotlight**: Highlights exactly what element to tap next with animated pulsing outlines and pointer guidance.
-   - **Bilingual Text & Voice**: Built-in speech synthesis (Web Speech API) provides spoken audio guidance in Urdu and English.
-   - **Scam & Safety Awareness**: Special warning triggers (`warn: true`) in red highlighting high-risk scam actions (e.g., lottery SMS links).
-   - **Dynamic DOM Mutation Observer**: Automatically tracks elements across screen transitions within apps.
-
-3. **Simulated Pakistani Everyday Apps**
-   - **WhatsApp (`src/apps/whatsapp`)**: Chat list, real-time message sending, voice note audio simulation.
-   - **Meezan Bank (`src/apps/meezan`)**: Asaan digital account balance toggle, money transfers to family beneficiaries with receipt.
-   - **SMS & Safety (`src/apps/sms`)**: Identify fake lottery scams (e.g. BISP prize fraud) and learn to block & report unknown links safely.
-   - **Video Call (`src/apps/videocall`)**: Answer incoming video calls from Ammi, mute/unmute audio, switch camera, and end calls.
-   - **Instagram (`src/apps/instagram`)**: View 24-hour disappearing photo stories and like family posts.
-   - **Facebook (`src/apps/facebook`)**: Post status updates with privacy filters and react with likes/comments.
+**A Safe, Guided Phone Simulator for Parents and Grandparents in Pakistan**  
+*Hackathon: Build4Better — NED University of Engineering & Technology*
 
 ---
 
-## 🛠️ Tech Stack
+## 👥 Team & Roles
 
-- **React 18** + **Vite**
-- **Tailwind CSS**
-- **Zustand** (Global state management)
-- **Lucide React** (Generic icons — no trademarked logos)
-- **Web Speech API** (Bilingual text-to-speech)
-
----
-
-## 📁 Architecture & Ownership
-
-```
-src/
-├── core/                   # Member 1: Shell, Coach engine, Store, I18n, Registry, Home
-│   ├── CoachEngine.jsx     # Visual spotlight, MutationObserver, Voice TTS
-│   ├── Home.jsx            # App launcher & lesson catalog
-│   ├── PhoneShell.jsx      # 390x844 phone frame, status bar & bottom controls
-│   ├── store.js            # Zustand state (mode, activeApp, activeLesson, progress)
-│   ├── i18n.js             # Bilingual language hook
-│   ├── registry.js         # Auto-discovery of apps
-│   └── tts.js              # Speech synthesis
-├── apps/
-│   ├── whatsapp/           # Member 2: Chat & voice notes
-│   ├── instagram/          # Member 2: Stories & like posts
-│   ├── facebook/           # Member 2: News feed & status composer
-│   ├── meezan/             # Member 3: Islamic banking & transfers
-│   ├── sms/                # Member 4: SMS scam spotting & blocking
-│   └── videocall/          # Member 4: Incoming & active video calls
-```
+- **Member 1 (Core Lead)**: Shell, Coach Engine, Store, I18n, App Registry, Home & Progress Screens (`src/core/**`)
+- **Member 2**: WhatsApp, Instagram, Facebook (`src/apps/whatsapp`, `src/apps/instagram`, `src/apps/facebook`)
+- **Member 3**: Islamic Banking (`src/apps/meezan`)
+- **Member 4**: SMS Scam Spotter & Video Call (`src/apps/sms`, `src/apps/videocall`)
 
 ---
 
-## 🚀 Getting Started
+## 🎯 Target User & The Problem
+
+In Pakistan, millions of elderly parents and grandparents struggle to navigate touchscreens, fear accidentally losing money, getting locked out of accounts, or falling prey to ubiquitous SMS/WhatsApp scams (e.g. fake Benazir Income Support Program prizes). They hesitate to practice on real devices because a mistaken tap could send embarrassing messages or delete data.
+
+**The Solution:**  
+*Practice Phone* provides a completely risk-free, sandboxed smartphone simulator. Learners practice high-stakes everyday actions (sending voice notes, transferring money on Meezan Digital, blocking lottery scams, answering family video calls) with an AI/interactive **COACH** that highlights exactly what to tap next via bilingual voice and text narration (Urdu & English).
+
+---
+
+## 🚀 Key Features
+
+### 1. Robust Phone Shell (`PhoneShell.jsx`)
+- **Centred 390×844 Mobile Viewport**: Dynamic Island notch, realistic status bar with live time, Wi-Fi, battery, and signal indicators.
+- **Adaptive Responsive Design**: On screens `< 500px`, seamlessly expands to full-screen without bezels for natural mobile usage.
+- **System Navigation Bar**: Persistent Home, Back, and Session Restart controls.
+
+### 2. High-Tech Coach Engine
+- **Spotlight Mask (`Spotlight.jsx`)**: Darkens background elements while creating a precision cutout around the target `[data-coach="..."]` element with animated pulsing rings and pointer indicators. Dynamically adjusts via `MutationObserver` and resize/scroll listeners.
+- **Coach Panel (`CoachPanel.jsx`)**: Accessible instruction bar with warm coach avatar, step counter (e.g. 2/5), Urdu/English speech replay, back/next navigation, and mistake alerts.
+- **Three Learning Modes**:
+  - **Guided Mode**: Continuous spotlight + bilingual spoken audio + automatic step progression.
+  - **Try Mode**: Test yourself without spoilers; hints trigger only on demand ("Need help?") or after an 8-second idle timeout.
+  - **Test Mode**: No visual spotlights; counts user mistakes and awards 1 to 3 stars upon completion.
+- **Capture-Phase Click Listener**: Non-blocking safety handler. If an incorrect element is tapped, the spotlight shakes gently and a polite guidance message appears without crashing or breaking the app.
+- **Completion Celebration (`CompletionScreen.jsx`)**: Stars rating (3 minus mistakes), performance review, and "Practise Again" options.
+
+### 3. Voice Narration (`voice.js`)
+- Full Web Speech API synthesis supporting Urdu (`ur-PK` / `ur`) with fallbacks and English (`en-US` / `en-IN`).
+- Automatic speech cancellation upon step changes and a one-tap mute switch.
+
+### 4. Progress Tracking (`ProgressScreen.jsx`)
+- Persisted locally in `localStorage`.
+- Tracks total stars earned, completed lesson tallies, and unlockable achievement badges (*First Step*, *Connected Family*, *Scam Spotter*, *Digital Banker*).
+
+### 5. Simulated Everyday Apps
+- **WhatsApp**: Chatting with Ammi/Abbu, sending texts, and recording voice notes.
+- **Meezan Bank**: Viewing/hiding Asaan Account balance, sending funds to family members.
+- **SMS & Safety**: Spotting fraudulent lottery links, reporting, and blocking malicious numbers.
+- **Video Call**: Answering incoming video calls, muting microphone, camera toggling, and hanging up.
+- **Instagram**: Watching 24h stories, liking family photos.
+- **Facebook**: Creating status posts, reacting to updates.
+
+---
+
+## 💻 Tech Stack
+
+- **Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **Icons**: Lucide React (Generic, clean icons — NO trademarked logos)
+- **Typography**: Noto Nastaliq Urdu & Noto Sans Arabic for RTL support
+- **Speech**: Browser Web Speech API (`SpeechSynthesis`)
+
+---
+
+## 📦 Setup & Running
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 npm install
 
-# Run development server
+# 2. Run local development server
 npm run dev
 
-# Build for production
+# 3. Production build
 npm run build
 ```
 
 ---
 
-## 🤖 AI Assistance & Tooling
+## 🤖 AI Tools & Third-Party Credits
 
-Developed with assistance from **Google Antigravity** during the **Build4Better (NED University)** hackathon.
-All apps, brands, and transactions in this project are strictly simulated mockups for educational accessibility purposes.
+- **Google Antigravity**: Autonomous AI pair-programming assistant for rapid hackathon scaffolding and testing.
+- **Fonts**: Google Fonts (*Noto Nastaliq Urdu*, *Noto Sans*).
+- **Icons**: Lucide React open-source iconography.
+
+---
+
+## ⚠️ Known Limitations & Mocked Features
+
+- **100% Simulated Environment**: Everything is simulated in client-side state. Nothing connects to real bank accounts, real cellular networks, or actual WhatsApp/Meta servers.
+- **Web Speech Voices**: Urdu voice synthesis relies on the client's OS/browser voices (e.g. Android/Chrome Urdu or Hindi voices); falls back gracefully where native Urdu TTS is not pre-installed.
+
+---
+
+## 🔖 Final Commit ID
+
+- **Scaffold & MVP Commit**: `9dc9ab982c0b613207c4fad62f9cfbf525aed9d6`
