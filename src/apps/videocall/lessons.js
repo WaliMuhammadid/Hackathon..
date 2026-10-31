@@ -1,30 +1,75 @@
 export const lessons = [
   {
-    id: 'vc-answer-call',
-    title: { en: 'Answer an incoming family video call', ur: 'گھر والوں کی ویڈیو کال اٹھائیں' },
+    id: 'vc-make-call',
+    title: { en: 'Make a video call to Ammi', ur: 'امی کو ویڈیو کال ملائیں' },
     duration: '2 min',
     steps: [
       {
-        target: 'vc-btn-accept',
+        target: 'vc-contact-ammi',
         action: 'tap',
-        text: { en: 'Tap the green button to accept the video call', ur: 'ویڈیو کال اٹھانے کے لیے سبز بٹن دبائیں' },
+        text: { en: 'Tap on Ammi from your contacts', ur: 'رابطوں میں سے امی پر دبائیں' },
       },
       {
-        target: 'vc-btn-mute',
+        target: 'vc-btn-start-call',
         action: 'tap',
-        text: { en: 'Tap the microphone to mute / unmute yourself', ur: 'اپنی آواز بند یا کھولنے کے لیے مائیک دبائیں' },
+        text: { en: 'Tap the green Call button', ur: 'سبز کال والے بٹن پر دبائیں' },
       },
       {
-        target: 'vc-btn-end',
+        target: 'vc-btn-toggle-mic',
         action: 'tap',
-        text: { en: 'Tap the red button when you want to end the call', ur: 'کال ختم کرنے کے لیے سرخ بٹن دبائیں' },
+        text: { en: 'Tap the microphone to mute / unmute', ur: 'مائیک کو بند یا کھولنے کے لیے دبائیں' },
+      },
+      {
+        target: 'vc-btn-end-call',
+        action: 'tap',
+        text: { en: 'Tap the red button to end the call', ur: 'کال ختم کرنے کے لیے سرخ بٹن دبائیں' },
       },
       {
         target: null,
         action: 'info',
         text: {
-          en: 'You are now ready for WhatsApp & family video calls anytime!',
-          ur: 'بہت خوب! اب آپ کسی بھی وقت فیملی کے ساتھ ویڈیو کال کر سکتے ہیں۔',
+          en: 'Well done! You can now video call family anytime.',
+          ur: 'بہت خوب! اب آپ کسی بھی وقت گھر والوں سے ویڈیو کال پر بات کر سکتے ہیں۔',
+        },
+      },
+    ],
+  },
+  {
+    id: 'vc-fix-connection',
+    title: { en: 'Fix a call that won’t connect', ur: 'کال نہ ملنے کا مسئلہ حل کریں' },
+    duration: '2 min',
+    steps: [
+      {
+        target: 'vc-contact-ammi',
+        action: 'tap',
+        text: { en: 'Tap on Ammi to call', ur: 'امی کو کال ملانے کے لیے دبائیں' },
+      },
+      {
+        target: 'vc-btn-start-call',
+        action: 'tap',
+        text: { en: 'Tap Call', ur: 'کال ملائیں' },
+      },
+      {
+        target: 'vc-helper-open-btn',
+        action: 'tap',
+        text: { en: 'Call failed! Tap the "Can’t connect?" helper', ur: 'کال نہیں ملی! "Can’t connect?" پر دبائیں' },
+      },
+      {
+        target: 'vc-toggle-wifi-fix',
+        action: 'tap',
+        text: { en: 'Tap the switch to turn Wi-Fi back on', ur: 'وائی فائی بحال کرنے کے لیے بٹن دبائیں' },
+      },
+      {
+        target: 'vc-btn-reconnect',
+        action: 'tap',
+        text: { en: 'Tap Try Again to reconnect', ur: 'دوبارہ کال ملانے کے لیے دبائیں' },
+      },
+      {
+        target: null,
+        action: 'info',
+        text: {
+          en: 'Connected! Checking your Wi-Fi or mobile data fixes most call issues.',
+          ur: 'کال مل گئی! اکثر انٹرنیٹ چیک کرنے سے کال کا مسئلہ فوری حل ہو جاتا ہے۔',
         },
       },
     ],
