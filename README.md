@@ -102,4 +102,5 @@ npm run build
 
 ## 🔖 Final Commit ID
 
-- **Scaffold & MVP Commit**: `9dc9ab982c0b613207c4fad62f9cfbf525aed9d6`
+- **Core Engine & Architecture Commit**: `440f5998dae5e15b2ed5b9f7b69a8d8e59797e9b`
+- **Initial Scaffold & MVP Commit**: `9dc9ab982c0b613207c4fad62f9cfbf525aed9d6`
