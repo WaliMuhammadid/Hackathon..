@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useT } from '../../core/i18n';
+import { useStore } from '../../core/store';
 import { COLORS } from './colors';
 import {
   Heart,
@@ -19,13 +20,25 @@ import {
 
 export default function InstagramApp({ onExit }) {
   const t = useT();
+  const { activeLesson } = useStore();
 
   // Screen flow: 'signup_1' -> 'signup_2' -> 'feed' -> 'dm_inbox' -> 'dm_chat'
-  const [screen, setScreen] = useState('signup_1');
+  // When 'ig-signup' lesson is chosen, start on 'signup_1'. Otherwise (like & comment, DM, or open freely), start on 'feed'.
+  const [screen, setScreen] = useState(
+    activeLesson?.id === 'ig-signup' ? 'signup_1' : 'feed'
+  );
   const [phoneOrEmail, setPhoneOrEmail] = useState('');
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [bottomTab, setBottomTab] = useState('home');
+
+  useEffect(() => {
+    if (activeLesson?.id === 'ig-signup') {
+      setScreen('signup_1');
+    } else if (activeLesson) {
+      setScreen('feed');
+    }
+  }, [activeLesson]);
 
   // Post interaction states
   const [liked, setLiked] = useState(false);
@@ -83,8 +96,8 @@ export default function InstagramApp({ onExit }) {
 
       {/* Screen 1: Signup Phone / Email */}
       {screen === 'signup_1' && (
-        <div className="flex-1 flex flex-col justify-between p-6 bg-white">
-          <div className="pt-8 text-center space-y-4">
+        <div className="flex-1 flex flex-col p-6 bg-white overflow-y-auto">
+          <div className="pt-6 text-center space-y-4">
             <h1 className="font-serif italic font-black text-3xl tracking-wide bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 bg-clip-text text-transparent">
               Instagram
             </h1>
@@ -100,7 +113,7 @@ export default function InstagramApp({ onExit }) {
               </p>
             </div>
 
-            <div className="pt-4 text-left">
+            <div className="pt-2 text-left">
               <label className="text-xs font-semibold text-slate-600 block mb-1">
                 {t({ en: 'Mobile Number', ur: 'موبائل نمبر' })}
               </label>
@@ -113,38 +126,38 @@ export default function InstagramApp({ onExit }) {
                 className="w-full p-3 border border-slate-300 rounded-xl outline-none focus:border-blue-500 text-sm font-semibold"
               />
             </div>
-          </div>
 
-          <div className="space-y-3 pb-4">
-            <button
-              type="button"
-              data-coach="ig-signup-next-1"
-              onClick={() => setScreen('signup_2')}
-              disabled={phoneOrEmail.length < 5}
-              className={`w-full py-3.5 rounded-xl text-white font-bold text-sm shadow transition ${
-                phoneOrEmail.length >= 5
-                  ? 'bg-[#0095F6] hover:bg-blue-600 active:scale-95'
-                  : 'bg-blue-300 cursor-not-allowed'
-              }`}
-            >
-              {t({ en: 'Next', ur: 'اگلا' })}
-            </button>
+            <div className="space-y-3 pt-2">
+              <button
+                type="button"
+                data-coach="ig-signup-next-1"
+                onClick={() => setScreen('signup_2')}
+                disabled={phoneOrEmail.length < 5}
+                className={`w-full py-3.5 rounded-xl text-white font-bold text-sm shadow transition ${
+                  phoneOrEmail.length >= 5
+                    ? 'bg-[#0095F6] hover:bg-blue-600 active:scale-95'
+                    : 'bg-blue-300 cursor-not-allowed'
+                }`}
+              >
+                {t({ en: 'Next', ur: 'اگلا' })}
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setScreen('feed')}
-              className="w-full text-center text-xs text-blue-600 font-semibold"
-            >
-              {t({ en: 'Skip to Feed (I already have an account)', ur: 'اکاؤنٹ موجود ہے (فیڈ پر جائیں)' })}
-            </button>
+              <button
+                type="button"
+                onClick={() => setScreen('feed')}
+                className="w-full text-center text-xs text-blue-600 font-semibold py-1"
+              >
+                {t({ en: 'Skip to Feed (I already have an account)', ur: 'اکاؤنٹ موجود ہے (فیڈ پر جائیں)' })}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Screen 2: Signup Name & Password */}
       {screen === 'signup_2' && (
-        <div className="flex-1 flex flex-col justify-between p-6 bg-white">
-          <div className="pt-6 space-y-4">
+        <div className="flex-1 flex flex-col p-6 bg-white overflow-y-auto">
+          <div className="pt-4 space-y-4">
             <button
               type="button"
               onClick={() => setScreen('signup_1')}
@@ -189,23 +202,23 @@ export default function InstagramApp({ onExit }) {
                   className="w-full p-3 border border-slate-300 rounded-xl outline-none focus:border-blue-500 text-sm"
                 />
               </div>
-            </div>
-          </div>
 
-          <div className="pb-4">
-            <button
-              type="button"
-              data-coach="ig-signup-submit"
-              onClick={() => setScreen('feed')}
-              disabled={fullName.length < 2 || password.length < 4}
-              className={`w-full py-3.5 rounded-xl text-white font-bold text-sm shadow transition ${
-                fullName.length >= 2 && password.length >= 4
-                  ? 'bg-[#0095F6] hover:bg-blue-600 active:scale-95'
-                  : 'bg-blue-300 cursor-not-allowed'
-              }`}
-            >
-              {t({ en: 'Complete Sign Up', ur: 'اکاؤنٹ بنائیں' })}
-            </button>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  data-coach="ig-signup-submit"
+                  onClick={() => setScreen('feed')}
+                  disabled={fullName.length < 2 || password.length < 4}
+                  className={`w-full py-3.5 rounded-xl text-white font-bold text-sm shadow transition ${
+                    fullName.length >= 2 && password.length >= 4
+                      ? 'bg-[#0095F6] hover:bg-blue-600 active:scale-95'
+                      : 'bg-blue-300 cursor-not-allowed'
+                  }`}
+                >
+                  {t({ en: 'Complete Sign Up', ur: 'اکاؤنٹ بنائیں' })}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -328,8 +341,8 @@ export default function InstagramApp({ onExit }) {
           {/* Comments Bottom Sheet Drawer */}
           {showComments && (
             <div className="absolute inset-0 z-40 bg-black/50 backdrop-blur-sm flex flex-col justify-end">
-              <div className="bg-white rounded-t-3xl p-4 max-h-[70%] flex flex-col shadow-2xl">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className={`bg-white rounded-t-3xl p-4 flex flex-col shadow-2xl ${activeLesson ? 'h-[92%] pb-60' : 'max-h-[75%]'}`}>
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
                   <h3 className="font-bold text-sm">
                     {t({ en: 'Comments', ur: 'تبصرے' })}
                   </h3>
@@ -339,7 +352,7 @@ export default function InstagramApp({ onExit }) {
                   />
                 </div>
 
-                <div className="flex-1 overflow-y-auto space-y-3 py-3 text-xs">
+                <div className="flex-1 overflow-y-auto space-y-3 py-3 text-xs min-h-0">
                   {commentsList.map((c) => (
                     <div key={c.id} className="flex items-start gap-2">
                       <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
@@ -353,7 +366,7 @@ export default function InstagramApp({ onExit }) {
                   ))}
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+                <div className="pt-2 border-t border-slate-100 flex items-center gap-2 shrink-0">
                   <input
                     type="text"
                     data-coach="ig-comment-input"
@@ -465,7 +478,7 @@ export default function InstagramApp({ onExit }) {
           </div>
 
           {/* DM Input Bar */}
-          <div className="p-3 border-t border-slate-200 flex items-center gap-2 bg-white">
+          <div className={`p-3 border-t border-slate-200 flex items-center gap-2 bg-white shrink-0 ${activeLesson ? 'pb-60' : ''}`}>
             <input
               type="text"
               data-coach="ig-dm-input"
