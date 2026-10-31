@@ -102,5 +102,7 @@ npm run build
 
 ## 🔖 Final Commit ID
 
-- **Core Engine & Architecture Commit**: `440f5998dae5e15b2ed5b9f7b69a8d8e59797e9b`
-- **Initial Scaffold & MVP Commit**: `9dc9ab982c0b613207c4fad62f9cfbf525aed9d6`
+- **Member 4 Delivery & Final Documentation**: `679575cd2593154ae77d4979da199bb9af22ebe5`
+- **Member 3 (Meezan Bank)**: `837c9d1a33719b67323e0c03fe7e1744b706c646`
+- **Member 2 (WhatsApp, Instagram, Facebook)**: `43e8f3bb4624707e44a4aa89617d1217e4521ddf`
+- **Member 1 (Core Shell & Engine)**: `440f5998dae5e15b2ed5b9f7b69a8d8e59797e9b`
