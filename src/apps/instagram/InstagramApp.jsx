@@ -341,8 +341,8 @@ export default function InstagramApp({ onExit }) {
           {/* Comments Bottom Sheet Drawer */}
           {showComments && (
             <div className="absolute inset-0 z-40 bg-black/50 backdrop-blur-sm flex flex-col justify-end">
-              <div className={`bg-white rounded-t-3xl p-4 max-h-[75%] flex flex-col shadow-2xl ${activeLesson ? 'pb-44' : ''}`}>
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className={`bg-white rounded-t-3xl p-4 flex flex-col shadow-2xl ${activeLesson ? 'h-[92%] pb-60' : 'max-h-[75%]'}`}>
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
                   <h3 className="font-bold text-sm">
                     {t({ en: 'Comments', ur: 'تبصرے' })}
                   </h3>
@@ -352,7 +352,7 @@ export default function InstagramApp({ onExit }) {
                   />
                 </div>
 
-                <div className="flex-1 overflow-y-auto space-y-3 py-3 text-xs">
+                <div className="flex-1 overflow-y-auto space-y-3 py-3 text-xs min-h-0">
                   {commentsList.map((c) => (
                     <div key={c.id} className="flex items-start gap-2">
                       <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
@@ -366,7 +366,7 @@ export default function InstagramApp({ onExit }) {
                   ))}
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 flex items-center gap-2">
+                <div className="pt-2 border-t border-slate-100 flex items-center gap-2 shrink-0">
                   <input
                     type="text"
                     data-coach="ig-comment-input"
@@ -478,7 +478,7 @@ export default function InstagramApp({ onExit }) {
           </div>
 
           {/* DM Input Bar */}
-          <div className={`p-3 border-t border-slate-200 flex items-center gap-2 bg-white ${activeLesson ? 'pb-44' : ''}`}>
+          <div className={`p-3 border-t border-slate-200 flex items-center gap-2 bg-white shrink-0 ${activeLesson ? 'pb-60' : ''}`}>
             <input
               type="text"
               data-coach="ig-dm-input"
