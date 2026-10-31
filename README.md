@@ -7,7 +7,7 @@
 
 ## 👥 Team & Roles
 
-- **Member 1 (Core Lead)**: Web & Phone Shells, Coach Engine, Store, I18n, App Registry, Home & Progress Screens (`src/core/**`)
+- **Member 1 (Core Lead)**: Web & Phone Shells, Practice Stage, Coach Engine, Store, I18n, Family Sharing & Reports, Home & Progress Screens (`src/core/**`)
 - **Member 2**: WhatsApp, Instagram, Facebook (`src/apps/whatsapp`, `src/apps/instagram`, `src/apps/facebook`)
 - **Member 3**: Islamic Banking (`src/apps/meezan`)
 - **Member 4**: SMS Scam Spotter & Video Call (`src/apps/sms`, `src/apps/videocall`)
@@ -25,46 +25,57 @@ In Pakistan, millions of elderly parents and grandparents struggle to navigate t
 
 ## 🚀 Key Features
 
-### 1. Dual-Mode Responsive Experience (`WebShell.jsx` & `WebNavbar.jsx`)
-- **Modern Full Web Layout (Default)**:
-  - Clean web header with direct navigation, Mode Selector (Guided, Try, Test), Voice Audio controls, Language switch (Urdu/English), and Progress tracking.
-  - Responsive Web Dashboard with friendly hero section, quick stats (Stars, Badges, Completed lessons), recommended lesson card, and a 6-app responsive grid.
-  - Centered web application container (`max-w-4xl`) with realistic web app window headers for desktop comfort and zero eye-strain.
-- **Phone Simulator Mode**:
-  - Centered 390×844 mobile phone viewport with Dynamic Island notch, realistic status bar (Wi-Fi, battery, signal), and persistent bottom system navigation controls.
-  - One-click toggle between **Web View** and **Phone View** anytime.
+### 1. Dedicated Practice Stage & Auto-Scaling Phone Frame
+- **Responsive Dashboard**: Clean header with language toggle, mode switcher (Guided, Try, Test), audio narration controls, quick stats (Stars, Badges, Completed lessons), practice streak, and 6 simulated apps.
+- **Dedicated Practice Stage (`#/stage`)**:
+  - Full-viewport `#FAF7F2` warm light layout with 0 page scroll at all standard screen resolutions (1440×900, 1280×720, etc.).
+  - Left column (360px): Live lesson card with app brand, 24px title, progress bar, vertical step list with status indicators (completed green check, current primary teal, upcoming muted/hidden in Test mode), and secondary controls.
+  - Right column: Precision 390×844 phone frame with 12px dark bezel, 44px outer radius, dynamic island notch, live status bar, and bottom system navigation bar. Auto-scales with `scale(min(1, (100vh - 140px) / 900))`.
+  - Tablet/Mobile: Collapsible "Steps" chip; under 500px, expands full-screen bezel-less.
 
 ### 2. High-Tech Coach Engine
-- **Spotlight Mask (`Spotlight.jsx`)**: Darkens background elements while creating a precision cutout around the target `[data-coach="..."]` element with animated pulsing rings and pointer indicators. Dynamically adjusts via `MutationObserver` and resize/scroll listeners.
-- **Coach Panel (`CoachPanel.jsx`)**: Accessible instruction bar with warm coach avatar, step counter (e.g. 2/5), Urdu/English speech replay, back/next navigation, and mistake alerts.
+- **Spotlight Mask (`Spotlight.jsx`)**: Darkens background elements while creating a precision cutout around the target `[data-coach="..."]` element with animated pulsing rings and pointer indicators. Scale-aware bounding box math guarantees exact alignment at every viewport scale.
+- **Coach Panel (`CoachPanel.jsx`)**: Accessible instruction bar with warm coach avatar, step counter (e.g. 2/5), Urdu/English speech replay, back/next navigation, and mistake alerts. Full RTL alignment and Urdu typography.
 - **Three Learning Modes**:
   - **Guided Mode**: Continuous spotlight + bilingual spoken audio + automatic step progression.
   - **Try Mode**: Test yourself without spoilers; hints trigger only on demand ("Need help?") or after an 8-second idle timeout.
   - **Test Mode**: No visual spotlights; counts user mistakes and awards 1 to 3 stars upon completion.
 - **Capture-Phase Click Listener**: Non-blocking safety handler. If an incorrect element is tapped, the spotlight shakes gently and a polite guidance message appears without crashing or breaking the app.
-- **Completion Celebration (`CompletionScreen.jsx`)**: Stars rating (3 minus mistakes), performance review, and "Practise Again" options.
+- **Completion Celebration (`CompletionScreen.jsx`)**: Confetti animation, stars rating (3 minus mistakes), "Next lesson" navigation, "Tell my family 🎉" button, and "Back to dashboard" return.
 
-### 3. Voice Narration (`voice.js`)
+### 3. Share Progress with Family (`src/core/share/**`)
+- **Zero-Backend Architecture**: 100% client-side URL-encoded payload (`#/report/<data>`). No user accounts, no logins, and zero cloud databases needed.
+- **Multi-Channel Sharing**:
+  - **WhatsApp Deep Link**: Opens a pre-written greeting and report link directly in WhatsApp (`wa.me/?text=...`).
+  - **Native Web Share**: Uses Web Share API when supported on mobile devices.
+  - **Copy Link**: Copies the self-contained report URL with instant "Copied ✓" feedback.
+  - **Save as Picture**: Renders a crisp report card onto a high-resolution canvas and automatically downloads a PNG image.
+- **Read-Only Family Report Page (`#/report/<token>`)**:
+  - Uncluttered, warm light mobile-first view.
+  - Big circular progress ring (lessons done / total) and stars count.
+  - Per-app progress bars (WhatsApp, Meezan, SMS & Safety, Video Call, Instagram, Facebook).
+  - Scam & Safety Spotter insight derived via rule-based scores.
+  - Badges earned and last 5 completed lessons.
+  - Actionable "Ways You Can Help" coaching tips for family members.
+  - Quick "Send Encouragement" WhatsApp reply button with 3 customizable praise templates.
+
+### 4. Voice Narration (`voice.js`)
 - Full Web Speech API synthesis supporting Urdu (`ur-PK` / `ur`) with fallbacks and English (`en-US` / `en-IN`).
 - Automatic speech cancellation upon step changes and a one-tap mute switch.
 
-### 4. Progress Tracking (`ProgressScreen.jsx`)
-- Persisted locally in `localStorage`.
-- Tracks total stars earned, completed lesson tallies, and unlockable achievement badges (*First Step*, *Connected Family*, *Scam Spotter*, *Digital Banker*).
-
 ### 5. Simulated Everyday Apps
-- **WhatsApp**: Chatting with Ammi/Abbu, sending texts, and recording voice notes.
-- **Meezan Bank**: Viewing/hiding Asaan Account balance, sending funds to family members.
-- **SMS & Safety**: Spotting fraudulent lottery links, reporting, and blocking malicious numbers.
-- **Video Call**: Answering incoming video calls, muting microphone, camera toggling, and hanging up.
-- **Instagram**: Watching 24h stories, liking family photos.
+- **WhatsApp**: Chatting with family, sending text messages, sharing photos, and recording voice notes.
+- **Meezan Bank**: Viewing/hiding Asaan Account balance, sending funds with OTP verification, declining scam callers.
+- **SMS & Safety**: Spotting fraudulent lottery links, red flag breakdown, voting, and blocking malicious numbers.
+- **Video Call**: Answering incoming video calls, muting microphone, camera toggling, and Wi-Fi trouble helper.
+- **Instagram**: Watching 24h stories, liking family photos, commenting safely.
 - **Facebook**: Creating status posts, reacting to updates.
 
 ---
 
 ## 💻 Tech Stack
 
-- **Framework**: React 18
+- **Framework**: React 19
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS
 - **State Management**: Zustand
@@ -89,24 +100,9 @@ npm run build
 
 ---
 
-## 🤖 AI Tools & Third-Party Credits
+## ⚠️ Known Limitations & Privacy Honesty
 
-- **Google Antigravity**: Autonomous AI pair-programming assistant for rapid hackathon scaffolding and testing.
-- **Fonts**: Google Fonts (*Noto Nastaliq Urdu*, *Noto Sans*).
-- **Icons**: Lucide React open-source iconography.
-
----
-
-## ⚠️ Known Limitations & Mocked Features
-
-- **100% Simulated Environment**: Everything is simulated in client-side state. Nothing connects to real bank accounts, real cellular networks, or actual WhatsApp/Meta servers.
+- **100% Simulated Environment**: All apps inside the Practice Stage are simulated in client-side state. Nothing connects to real bank accounts, real cellular networks, or actual WhatsApp/Meta servers.
+- **External WhatsApp Link**: The "Send on WhatsApp" button in the Share Sheet and Family Report is a genuine external URL scheme (`https://wa.me/?text=...`) to allow real family communication, while all apps inside the phone simulator remain simulated.
+- **Client-Side Self-Contained URLs**: The Family Report links contain the progress summary directly inside the URL hash (`#/report/<base64>`). No backend server or database stores this data. Only lesson progress, stars, and badges are encoded; personal contact information and device details are strictly excluded.
 - **Web Speech Voices**: Urdu voice synthesis relies on the client's OS/browser voices (e.g. Android/Chrome Urdu or Hindi voices); falls back gracefully where native Urdu TTS is not pre-installed.
-
----
-
-## 🔖 Final Commit ID
-
-- **Member 4 Delivery & Final Documentation**: `679575cd2593154ae77d4979da199bb9af22ebe5`
-- **Member 3 (Meezan Bank)**: `837c9d1a33719b67323e0c03fe7e1744b706c646`
-- **Member 2 (WhatsApp, Instagram, Facebook)**: `43e8f3bb4624707e44a4aa89617d1217e4521ddf`
-- **Member 1 (Core Shell & Engine)**: `440f5998dae5e15b2ed5b9f7b69a8d8e59797e9b`

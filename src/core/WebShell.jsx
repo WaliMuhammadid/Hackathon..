@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStore } from './store';
 import WebNavbar from './WebNavbar';
 import WebHomeScreen from './WebHomeScreen';
 import PracticeStage from './PracticeStage';
 import ProgressScreen from './ProgressScreen';
+import ShareSheet from './share/ShareSheet';
+import FamilyReport from './share/FamilyReport';
 
 /**
  * Main Shell for Practice Web Portal
- * Coordinates routing between the Web Dashboard (#/) and the dedicated Practice Stage (#/stage).
- * Simulated apps open ONLY inside the Phone Frame on the Practice Stage.
+ * Coordinates routing between:
+ * 1. Web Dashboard (#/)
+ * 2. Dedicated Practice Stage (#/stage)
+ * 3. Read-only Family Report (#/report/<data>)
  */
 export default function WebShell() {
   const {
@@ -16,10 +20,20 @@ export default function WebShell() {
     exitApp,
     showProgress,
     setShowProgress,
+    showShare,
+    setShowShare,
   } = useStore();
+
+  const [currentHash, setCurrentHash] = useState(() =>
+    typeof window !== 'undefined' ? window.location.hash : '#/'
+  );
 
   // Sync route hash with activeApp state
   useEffect(() => {
+    if (currentHash.startsWith('#/report/')) {
+      return;
+    }
+
     if (activeApp) {
       if (window.location.hash !== '#/stage') {
         window.location.hash = '#/stage';
@@ -29,15 +43,20 @@ export default function WebShell() {
         window.location.hash = '#/';
       }
     }
-  }, [activeApp]);
+  }, [activeApp, currentHash]);
 
   // Handle browser back / forward navigation via hashchange
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
+      const hash = window.location.hash || '#/';
+      setCurrentHash(hash);
       const currentActive = useStore.getState().activeApp;
 
-      if (hash !== '#/stage' && currentActive) {
+      if (hash.startsWith('#/report/')) {
+        if (currentActive) {
+          exitApp();
+        }
+      } else if (hash !== '#/stage' && currentActive) {
         // User pressed browser back button from stage to dashboard
         exitApp();
       } else if (hash === '#/stage' && !currentActive) {
@@ -55,12 +74,23 @@ export default function WebShell() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, [exitApp, activeApp]);
 
-  // If an app is launched, render the Practice Stage
-  if (activeApp) {
-    return <PracticeStage />;
+  // 1. Read-only Family Report route: #/report/<data> (opens without dashboard chrome)
+  if (currentHash.startsWith('#/report/')) {
+    const dataToken = currentHash.slice('#/report/'.length);
+    return <FamilyReport dataToken={dataToken} />;
   }
 
-  // Otherwise, render the standard responsive Web Dashboard
+  // 2. Practice Stage view when an app is active
+  if (activeApp) {
+    return (
+      <>
+        <PracticeStage />
+        {showShare && <ShareSheet onClose={() => setShowShare(false)} />}
+      </>
+    );
+  }
+
+  // 3. Responsive Web Dashboard
   return (
     <div className="min-h-screen w-full bg-slate-950 flex flex-col text-white font-sans selection:bg-blue-600 selection:text-white">
       {/* Top Universal Web Navbar */}
@@ -74,6 +104,11 @@ export default function WebShell() {
       {/* Global Progress Modal */}
       {showProgress && (
         <ProgressScreen onClose={() => setShowProgress(false)} />
+      )}
+
+      {/* Global Share Sheet Modal */}
+      {showShare && (
+        <ShareSheet onClose={() => setShowShare(false)} />
       )}
     </div>
   );

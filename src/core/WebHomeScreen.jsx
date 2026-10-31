@@ -11,11 +11,12 @@ import {
   ArrowRight,
   Compass,
   CheckCircle2,
+  Share2,
 } from 'lucide-react';
 
 /**
  * Web Dashboard for Home Screen
- * Displays a responsive grid of apps, progress statistics, and recommended lessons
+ * Displays a responsive grid of apps, progress statistics, family sharing, and recommended lessons
  */
 export default function WebHomeScreen() {
   const t = useT();
@@ -24,6 +25,7 @@ export default function WebHomeScreen() {
     progress,
     launchApp,
     setShowProgress,
+    setShowShare,
   } = useStore();
 
   const [selectedAppForLessons, setSelectedAppForLessons] = useState(null);
@@ -33,7 +35,7 @@ export default function WebHomeScreen() {
     0
   );
   const completedLessons = Object.values(progress.lessons || {}).filter(
-    (l) => l.completed
+    (l) => l && l.completed
   ).length;
 
   // Find next uncompleted lesson
@@ -42,6 +44,19 @@ export default function WebHomeScreen() {
   );
   const recommendedLesson =
     allLessons.find((l) => !progress.lessons?.[l.id]?.completed) || allLessons[0];
+
+  // Calculate practice streak (days practiced)
+  const completedList = Object.values(progress.lessons || {}).filter(
+    (l) => l && l.completed && l.timestamp
+  );
+  const streakDays = Math.max(
+    1,
+    new Set(
+      completedList.map((l) =>
+        new Date(l.timestamp).toISOString().slice(0, 10)
+      )
+    ).size
+  );
 
   return (
     <div
@@ -120,6 +135,77 @@ export default function WebHomeScreen() {
           </div>
         </div>
       </section>
+
+      {/* Family Sharing & Practice Streak Bar */}
+      <section className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        {/* Weekly Streak Chip */}
+        <div className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs font-bold text-amber-300 shrink-0">
+          <span className="text-base">🔥</span>
+          <span>
+            {lang === 'ur'
+              ? `${streakDays} دن کا مشق کا تسلسل`
+              : `${streakDays}-Day Practice Streak`}
+          </span>
+        </div>
+
+        {/* 56px High Secondary "Share with family" Card / Button */}
+        <button
+          type="button"
+          onClick={() => setShowShare(true)}
+          className="h-[56px] min-h-[56px] flex-1 px-5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-slate-600 text-white font-bold text-xs sm:text-sm flex items-center justify-between shadow-lg active:scale-98 transition cursor-pointer"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center shrink-0">
+              <Share2 className="w-4 h-4" />
+            </div>
+            <div className="text-left rtl:text-right">
+              <span className={`block font-bold text-slate-100 ${lang === 'ur' ? 'font-urdu' : ''}`}>
+                {lang === 'ur'
+                  ? 'گھر والوں کے ساتھ پیش رفت شیئر کریں'
+                  : 'Share with family'}
+              </span>
+              <span className="text-[10px] text-slate-400 font-normal hidden sm:block">
+                {lang === 'ur'
+                  ? 'رپورٹ کارڈ واٹس ایپ یا لنک کے ذریعے بھیجیں'
+                  : 'Send report card on WhatsApp or copy link'}
+              </span>
+            </div>
+          </div>
+
+          <span className="text-xs font-mono text-teal-400 font-bold shrink-0">
+            {completedLessons}/{totalLessons} →
+          </span>
+        </button>
+      </section>
+
+      {/* Gentle Nudge Banner after completing 3+ lessons */}
+      {completedLessons >= 3 && (
+        <section className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-teal-950/70 via-slate-900 to-indigo-950/70 border border-teal-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-md">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl shrink-0">🎉</span>
+            <div>
+              <h4 className={`text-xs sm:text-sm font-bold text-teal-200 ${lang === 'ur' ? 'font-urdu' : ''}`}>
+                {lang === 'ur'
+                  ? 'ماشاءاللہ! آپ نے 3 اسباق مکمل کر لیے ہیں'
+                  : 'Want to show your family your progress?'}
+              </h4>
+              <p className="text-[11px] text-slate-300">
+                {lang === 'ur'
+                  ? 'کیا آپ اپنے بچوں اور گھر والوں کو دکھانا چاہتے ہیں کہ آپ نے کیا سیکھا ہے؟'
+                  : 'You have finished 3+ lessons! Let your family see how confident you have become.'}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowShare(true)}
+            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold shrink-0 active:scale-95 transition shadow cursor-pointer"
+          >
+            {lang === 'ur' ? 'ابھی شیئر کریں' : 'Share Now'}
+          </button>
+        </section>
+      )}
 
       {/* Recommended Lesson Action Card */}
       {recommendedLesson && (
@@ -251,7 +337,7 @@ export default function WebHomeScreen() {
                   <button
                     type="button"
                     onClick={() => setSelectedAppForLessons(app)}
-                    className="flex-1 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow active:scale-95 transition"
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow active:scale-95 transition cursor-pointer"
                   >
                     <BookOpen className="w-3.5 h-3.5" />
                     <span>
@@ -262,11 +348,11 @@ export default function WebHomeScreen() {
                   <button
                     type="button"
                     onClick={() => launchApp(app.id, null)}
-                    className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold flex items-center gap-1 active:scale-95 transition"
+                    className="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-bold flex items-center gap-1 active:scale-95 transition cursor-pointer"
                     title={lang === 'ur' ? 'ایپ خود چلائیں' : 'Open app freely'}
                   >
                     <Compass className="w-3.5 h-3.5" />
-                    <span className="inline">
+                    <span className="hidden sm:inline">
                       {lang === 'ur' ? 'کھولیں' : 'Open'}
                     </span>
                   </button>

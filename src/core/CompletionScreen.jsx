@@ -4,7 +4,7 @@ import { getAppById } from './registry';
 import { Star, RotateCcw, ArrowRight, LayoutDashboard, Award } from 'lucide-react';
 
 export default function CompletionScreen({ onRestart, onExit }) {
-  const { lang, lastScore, activeLesson, activeApp, launchApp, exitApp } = useStore();
+  const { lang, lastScore, activeLesson, activeApp, launchApp, exitApp, setShowShare } = useStore();
 
   const stars = lastScore?.stars || 3;
   const mistakes = lastScore?.mistakes || 0;
@@ -90,17 +90,27 @@ export default function CompletionScreen({ onRestart, onExit }) {
 
         {/* Buttons */}
         <div className="space-y-2 pt-1">
-          {/* Next Lesson Button (if next lesson exists) */}
-          {nextLesson && (
+          {/* Next Lesson & Tell My Family Buttons */}
+          <div className="flex items-center gap-2">
+            {nextLesson && (
+              <button
+                type="button"
+                onClick={() => launchApp(activeApp, nextLesson)}
+                className="flex-1 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition"
+              >
+                <span>{lang === 'ur' ? 'اگلا سبق' : 'Next Lesson'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            )}
+
             <button
               type="button"
-              onClick={() => launchApp(activeApp, nextLesson)}
-              className="w-full py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg active:scale-95 transition"
+              onClick={() => setShowShare(true)}
+              className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg active:scale-95 transition cursor-pointer"
             >
-              <span>{lang === 'ur' ? 'اگلا سبق شروع کریں' : 'Next Lesson'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <span>{lang === 'ur' ? 'گھر والوں کو بتائیں 🎉' : 'Tell my family 🎉'}</span>
             </button>
-          )}
+          </div>
 
           {/* Practise Again Button */}
           <button
