@@ -7,8 +7,6 @@ import {
   Sparkles,
   PlayCircle,
   ShieldCheck,
-  ShieldAlert,
-  Award,
   BookOpen,
   ArrowRight,
   Compass,
@@ -23,7 +21,6 @@ export default function WebHomeScreen() {
   const t = useT();
   const {
     lang,
-    mode,
     progress,
     launchApp,
     setShowProgress,

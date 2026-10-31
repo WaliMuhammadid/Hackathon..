@@ -125,7 +125,7 @@ export default function CoachEngine({ containerRef }) {
     return (
       <CompletionScreen
         onRestart={() => launchApp(activeApp, activeLesson)}
-        onExit={exitLesson}
+        onExit={exitApp}
       />
     );
   }

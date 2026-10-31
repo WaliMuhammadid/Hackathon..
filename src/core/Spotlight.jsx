@@ -23,12 +23,13 @@ export default function Spotlight({
       if (element) {
         const cRect = container.getBoundingClientRect();
         const eRect = element.getBoundingClientRect();
+        const scale = container.offsetWidth > 0 ? (cRect.width / container.offsetWidth) : 1;
 
         setRect({
-          top: eRect.top - cRect.top,
-          left: eRect.left - cRect.left,
-          width: eRect.width,
-          height: eRect.height,
+          top: (eRect.top - cRect.top) / scale,
+          left: (eRect.left - cRect.left) / scale,
+          width: eRect.width / scale,
+          height: eRect.height / scale,
         });
       } else {
         setRect(null);

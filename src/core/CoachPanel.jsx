@@ -156,6 +156,7 @@ export default function CoachPanel({
 
         {/* Step Instruction text: large (18-20px) font, RTL safe */}
         <div
+          dir={lang === 'ur' ? 'rtl' : 'ltr'}
           className={`text-lg sm:text-[19px] font-semibold leading-relaxed my-2.5 ${
             lang === 'ur' ? 'font-urdu text-right text-xl leading-loose' : 'text-left'
           }`}
