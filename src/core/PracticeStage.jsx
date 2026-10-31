@@ -363,7 +363,7 @@ export default function PracticeStage() {
               }`}
             />
             <span className={lang === 'ur' ? 'font-urdu' : ''}>
-              {lang === 'ur' ? 'ڈیش بورڈ پر واپس' : '← Back to dashboard'}
+              {lang === 'ur' ? 'ڈیش بورڈ پر واپس' : ' Back to dashboard'}
             </span>
           </button>
 

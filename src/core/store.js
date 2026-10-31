@@ -7,7 +7,13 @@ const STORAGE_KEY = 'practice_phone_progress_v1';
 const getInitialProgress = () => {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : { lessons: {}, stars: 0, badges: [] };
+    if (!saved) return { lessons: {}, stars: 0, badges: [] };
+    const parsed = JSON.parse(saved);
+    return {
+      lessons: parsed?.lessons || {},
+      stars: typeof parsed?.stars === 'number' ? parsed.stars : 0,
+      badges: Array.isArray(parsed?.badges) ? parsed.badges : [],
+    };
   } catch {
     return { lessons: {}, stars: 0, badges: [] };
   }
@@ -39,8 +45,6 @@ export const useStore = create((set, get) => ({
   toggleLang: () => set((state) => ({ lang: state.lang === 'en' ? 'ur' : 'en' })),
   setMode: (mode) => set({ mode }),
   setViewMode: (viewMode) => set({ viewMode }),
-  toggleViewMode: () =>
-    set((state) => ({ viewMode: state.viewMode === 'web' ? 'phone' : 'web' })),
   setShowProgress: (show) => set({ showProgress: show }),
 
   toggleVoice: () => {
@@ -144,35 +148,38 @@ export const useStore = create((set, get) => ({
 
   completeLesson: (lessonId) => {
     const { mistakesCount, progress } = get();
-    const starsEarned = Math.max(1, 3 - mistakesCount);
+    const starsEarned = Math.max(1, 3 - (mistakesCount || 0));
+
+    const safeLessons = progress?.lessons || {};
+    const safeBadges = Array.isArray(progress?.badges) ? progress.badges : [];
 
     const updatedLessons = {
-      ...progress.lessons,
+      ...safeLessons,
       [lessonId]: {
         completed: true,
-        stars: Math.max(starsEarned, progress.lessons[lessonId]?.stars || 0),
+        stars: Math.max(starsEarned, safeLessons[lessonId]?.stars || 0),
         timestamp: Date.now(),
       },
     };
 
     // Calculate total stars
     const totalStars = Object.values(updatedLessons).reduce(
-      (sum, l) => sum + (l.stars || 0),
+      (sum, l) => sum + (l?.stars || 0),
       0
     );
 
-    // Compute badges
-    const badges = [...progress.badges];
+    // Compute badges safely
+    const badges = [...safeBadges];
     if (!badges.includes('first_step') && Object.keys(updatedLessons).length >= 1) {
       badges.push('first_step');
     }
-    if (!badges.includes('scam_spotter') && lessonId.includes('sms')) {
+    if (!badges.includes('scam_spotter') && lessonId && lessonId.includes('sms')) {
       badges.push('scam_spotter');
     }
-    if (!badges.includes('digital_banker') && lessonId.includes('mz')) {
+    if (!badges.includes('digital_banker') && lessonId && lessonId.includes('mz')) {
       badges.push('digital_banker');
     }
-    if (!badges.includes('connected_family') && (lessonId.includes('wa') || lessonId.includes('vc'))) {
+    if (!badges.includes('connected_family') && lessonId && (lessonId.includes('wa') || lessonId.includes('vc'))) {
       badges.push('connected_family');
     }
     if (!badges.includes('master_explorer') && Object.keys(updatedLessons).length >= 5) {
@@ -194,13 +201,17 @@ export const useStore = create((set, get) => ({
     set({
       progress: newProgress,
       isCompleted: true,
-      lastScore: { stars: starsEarned, mistakes: mistakesCount },
+      lastScore: { stars: starsEarned, mistakes: mistakesCount || 0 },
     });
   },
 
   resetProgress: () => {
     const initial = { lessons: {}, stars: 0, badges: [] };
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+      console.warn('Could not remove progress from localStorage', e);
+    }
     set({ progress: initial });
   },
 }));

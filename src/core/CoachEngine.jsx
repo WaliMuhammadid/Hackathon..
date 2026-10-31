@@ -15,6 +15,7 @@ export default function CoachEngine({ containerRef }) {
     nextStep,
     prevStep,
     exitLesson,
+    exitApp,
     launchApp,
     activeApp,
     recordMistake,

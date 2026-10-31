@@ -4,7 +4,7 @@ import { getAppById } from './registry';
 import { Star, RotateCcw, ArrowRight, LayoutDashboard, Award } from 'lucide-react';
 
 export default function CompletionScreen({ onRestart, onExit }) {
-  const { lang, lastScore, activeLesson, activeApp, launchApp } = useStore();
+  const { lang, lastScore, activeLesson, activeApp, launchApp, exitApp } = useStore();
 
   const stars = lastScore?.stars || 3;
   const mistakes = lastScore?.mistakes || 0;
@@ -16,6 +16,14 @@ export default function CompletionScreen({ onRestart, onExit }) {
     currentIndex >= 0 && currentIndex + 1 < lessons.length
       ? lessons[currentIndex + 1]
       : null;
+
+  const handleExit = () => {
+    if (typeof onExit === 'function') {
+      onExit();
+    } else {
+      exitApp();
+    }
+  };
 
   return (
     <div className="absolute inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-4 text-white text-center overflow-hidden select-none">
@@ -107,7 +115,7 @@ export default function CompletionScreen({ onRestart, onExit }) {
           {/* Back to Dashboard Button */}
           <button
             type="button"
-            onClick={onExit}
+            onClick={handleExit}
             className="w-full py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow active:scale-95 transition"
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-teal-400" />
