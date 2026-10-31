@@ -3,6 +3,15 @@ import { voice } from './voice';
 
 // Local storage key for persistence
 const STORAGE_KEY = 'practice_phone_progress_v1';
+const FAMILY_PHONE_KEY = 'practice_phone_family_phone_v1';
+
+const getInitialFamilyPhone = () => {
+  try {
+    return localStorage.getItem(FAMILY_PHONE_KEY) || '';
+  } catch {
+    return '';
+  }
+};
 
 const getInitialProgress = () => {
   try {
@@ -41,6 +50,19 @@ export const useStore = create((set, get) => ({
 
   // Persistent progress
   progress: getInitialProgress(),
+
+  // Family sharing setting: WhatsApp number in international digits (e.g. 923001234567)
+  familyPhone: getInitialFamilyPhone(),
+
+  setFamilyPhone: (phone) => {
+    const digits = String(phone || '').replace(/\D/g, '');
+    try {
+      localStorage.setItem(FAMILY_PHONE_KEY, digits);
+    } catch (e) {
+      console.warn('Could not save family phone to localStorage', e);
+    }
+    set({ familyPhone: digits });
+  },
 
   setLang: (lang) => set({ lang }),
   toggleLang: () => set((state) => ({ lang: state.lang === 'en' ? 'ur' : 'en' })),

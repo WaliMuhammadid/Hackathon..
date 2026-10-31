@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore } from './store';
 import { useT } from './i18n';
 import { apps } from './registry';
+import FamilyShare from './FamilyShare';
 import {
   X,
   Award,
@@ -199,6 +200,9 @@ export default function ProgressScreen({ onClose }) {
               )}
             </div>
           </div>
+
+                    {/* Family Share (QR & WhatsApp Setting) */}
+          <FamilyShare progress={progress} />
 
           {/* Reset progress option */}
           <div className="pt-2 text-center">
