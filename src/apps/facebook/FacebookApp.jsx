@@ -328,10 +328,10 @@ export default function FacebookApp({ onExit }) {
           SCREEN: LOGIN
           ========================================================================= */}
       {screen === 'login' && (
-        <div className="flex-1 flex flex-col justify-between p-6 bg-white overflow-y-auto">
-          <div className="pt-8 text-center space-y-4 max-w-sm mx-auto w-full">
+        <div className="flex-1 flex flex-col p-5 bg-white overflow-y-auto pb-48">
+          <div className="pt-2 text-center space-y-3 max-w-sm mx-auto w-full">
             <span
-              className="font-black text-4xl tracking-tighter block select-none"
+              className="font-black text-3xl tracking-tighter block select-none"
               style={{ color: COLORS.primary }}
             >
               facebook
@@ -344,7 +344,7 @@ export default function FacebookApp({ onExit }) {
             </p>
 
             {/* Quick Demo Autofill Chip */}
-            <div className="pt-1 flex justify-center">
+            <div className="pt-0.5 flex justify-center">
               <button
                 type="button"
                 onClick={handleAutoFillDemo}
@@ -357,7 +357,7 @@ export default function FacebookApp({ onExit }) {
               </button>
             </div>
 
-            <div className="space-y-3 pt-3 text-left">
+            <div className="space-y-3 pt-2 text-left">
               <div>
                 <label className="text-xs font-semibold text-slate-700 block mb-1">
                   {t({ en: 'Mobile Number or Email', ur: 'موبائل نمبر یا ای میل' })}
@@ -367,11 +367,6 @@ export default function FacebookApp({ onExit }) {
                   data-coach="fb-login-phone-input"
                   value={loginPhone}
                   onChange={(e) => setLoginPhone(e.target.value)}
-                  onFocus={() => {
-                    if (activeLesson?.id === 'fb-login' && stepIndex === 0) {
-                      // Already on step 0
-                    }
-                  }}
                   placeholder="0300 1234567"
                   className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:border-blue-500 focus:bg-white text-sm transition"
                 />
@@ -404,38 +399,42 @@ export default function FacebookApp({ onExit }) {
                   </button>
                 </div>
               </div>
+
+              {loginError && (
+                <p className="text-xs text-red-500 font-semibold">{loginError}</p>
+              )}
+
+              {/* Log In Button - placed directly below Password field */}
+              <div className="pt-2">
+                <button
+                  type="button"
+                  data-coach="fb-login-submit-btn"
+                  onClick={handleLoginSubmit}
+                  className="w-full py-3.5 rounded-xl text-white font-bold text-sm shadow-md bg-blue-600 hover:bg-blue-700 active:scale-95 transition cursor-pointer"
+                >
+                  {t({ en: 'Log In', ur: 'لاگ ان کریں' })}
+                </button>
+              </div>
+
+              {/* Skip to Feed text link */}
+              <div className="text-center pt-1 pb-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      localStorage.setItem(STORAGE_KEY, 'true');
+                    } catch {
+                      // ignore
+                    }
+                    setIsLoggedIn(true);
+                    setScreen('feed');
+                  }}
+                  className="text-xs text-blue-600 font-semibold py-1 hover:underline cursor-pointer"
+                >
+                  {t({ en: 'Skip directly to Feed', ur: 'براہ راست فیڈ پر جائیں' })}
+                </button>
+              </div>
             </div>
-
-            {loginError && (
-              <p className="text-xs text-red-500 font-semibold">{loginError}</p>
-            )}
-          </div>
-
-          <div className="space-y-3 pb-4 max-w-sm mx-auto w-full pt-6">
-            <button
-              type="button"
-              data-coach="fb-login-submit-btn"
-              onClick={handleLoginSubmit}
-              className="w-full py-3.5 rounded-xl text-white font-bold text-sm shadow-md bg-blue-600 hover:bg-blue-700 active:scale-95 transition"
-            >
-              {t({ en: 'Log In', ur: 'لاگ ان کریں' })}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                try {
-                  localStorage.setItem(STORAGE_KEY, 'true');
-                } catch {
-                  // ignore
-                }
-                setIsLoggedIn(true);
-                setScreen('feed');
-              }}
-              className="w-full text-center text-xs text-blue-600 font-semibold py-1 hover:underline"
-            >
-              {t({ en: 'Skip directly to Feed', ur: 'براہ راست فیڈ پر جائیں' })}
-            </button>
           </div>
         </div>
       )}
