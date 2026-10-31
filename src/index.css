@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[dir="rtl"], .font-urdu {
+  font-family: 'Noto Nastaliq Urdu', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Custom phone frame highlight pulse */
+@keyframes coach-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.8), 0 0 15px rgba(59, 130, 246, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.4), 0 0 25px rgba(59, 130, 246, 0.8);
+    transform: scale(1.02);
+  }
+}
+
+.coach-target-active {
+  animation: coach-pulse 1.8s infinite ease-in-out !important;
+  z-index: 40 !important;
+  position: relative !important;
+  border-radius: 8px !important;
+}
+
+.coach-target-warn {
+  animation: coach-pulse-warn 1.5s infinite ease-in-out !important;
+  z-index: 40 !important;
+  position: relative !important;
+}
+
+@keyframes coach-pulse-warn {
+  0%, 100% {
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.9), 0 0 15px rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.4), 0 0 25px rgba(239, 68, 68, 0.9);
+  }
+}
