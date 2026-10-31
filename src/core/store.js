@@ -38,6 +38,7 @@ export const useStore = create((set, get) => ({
   sessionKey: 0,
   voiceMuted: false,
   showProgress: false,
+  showShare: false,
 
   // Try & Test mode states
   mistakesCount: 0,
@@ -68,6 +69,7 @@ export const useStore = create((set, get) => ({
   setMode: (mode) => set({ mode }),
   setViewMode: (viewMode) => set({ viewMode }),
   setShowProgress: (show) => set({ showProgress: show }),
+  setShowShare: (show) => set({ showShare: show }),
 
   toggleVoice: () => {
     const muted = voice.toggleMute();
