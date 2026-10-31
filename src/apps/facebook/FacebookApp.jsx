@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useT } from '../../core/i18n';
+import { useStore } from '../../core/store';
 import { COLORS } from './colors';
 import {
   ThumbsUp,
@@ -21,15 +22,29 @@ import {
 
 export default function FacebookApp({ onExit }) {
   const t = useT();
+  const { activeLesson } = useStore();
 
   // Screen flow: 'login' -> 'feed' -> 'inbox'
-  const [screen, setScreen] = useState('feed');
+  // When 'fb-login' lesson is chosen, start on 'login'. Otherwise (react post, post status, or open freely), start on 'feed'.
+  const [screen, setScreen] = useState(
+    activeLesson?.id === 'fb-login' ? 'login' : 'feed'
+  );
   const [loginPhone, setLoginPhone] = useState('');
   const [loginPass, setLoginPass] = useState('');
 
   // Status composer modal
   const [isComposing, setIsComposing] = useState(false);
   const [statusText, setStatusText] = useState('');
+
+  useEffect(() => {
+    if (activeLesson?.id === 'fb-login') {
+      setScreen('login');
+      setIsComposing(false);
+    } else if (activeLesson) {
+      setScreen('feed');
+      setIsComposing(false);
+    }
+  }, [activeLesson]);
 
   // Posts list
   const [posts, setPosts] = useState([
@@ -89,8 +104,12 @@ export default function FacebookApp({ onExit }) {
 
       {/* Screen: Login */}
       {screen === 'login' && (
-        <div className="flex-1 flex flex-col justify-between p-6 bg-white">
-          <div className="pt-10 text-center space-y-4">
+        <div
+          className={`flex-1 flex flex-col overflow-y-auto p-6 bg-white ${
+            activeLesson ? 'pb-60' : 'pb-6'
+          }`}
+        >
+          <div className="pt-6 text-center space-y-4">
             <span
               className="font-black text-4xl tracking-tighter block"
               style={{ color: COLORS.primary }}
@@ -104,7 +123,7 @@ export default function FacebookApp({ onExit }) {
               })}
             </p>
 
-            <div className="space-y-3 pt-4 text-left">
+            <div className="space-y-3 pt-2 text-left">
               <div>
                 <label className="text-xs font-semibold text-slate-600 block mb-1">
                   {t({ en: 'Mobile Number or Email', ur: 'موبائل نمبر یا ای میل' })}
@@ -133,30 +152,30 @@ export default function FacebookApp({ onExit }) {
                 />
               </div>
             </div>
-          </div>
 
-          <div className="space-y-3 pb-4">
-            <button
-              type="button"
-              data-coach="fb-login-submit-btn"
-              onClick={() => setScreen('feed')}
-              disabled={loginPhone.length < 4 || loginPass.length < 4}
-              className={`w-full py-3.5 rounded-xl text-white font-bold text-sm shadow transition ${
-                loginPhone.length >= 4 && loginPass.length >= 4
-                  ? 'bg-blue-600 hover:bg-blue-700 active:scale-95'
-                  : 'bg-blue-300 cursor-not-allowed'
-              }`}
-            >
-              {t({ en: 'Log In', ur: 'لاگ ان کریں' })}
-            </button>
+            <div className="space-y-3 pt-3">
+              <button
+                type="button"
+                data-coach="fb-login-submit-btn"
+                onClick={() => setScreen('feed')}
+                disabled={loginPhone.length < 4 || loginPass.length < 4}
+                className={`w-full py-3.5 rounded-xl text-white font-bold text-sm shadow transition ${
+                  loginPhone.length >= 4 && loginPass.length >= 4
+                    ? 'bg-blue-600 hover:bg-blue-700 active:scale-95'
+                    : 'bg-blue-300 cursor-not-allowed'
+                }`}
+              >
+                {t({ en: 'Log In', ur: 'لاگ ان کریں' })}
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setScreen('feed')}
-              className="w-full text-center text-xs text-blue-600 font-semibold"
-            >
-              {t({ en: 'Skip to Feed', ur: 'فیڈ پر جائیں' })}
-            </button>
+              <button
+                type="button"
+                onClick={() => setScreen('feed')}
+                className="w-full text-center text-xs text-blue-600 font-semibold py-1"
+              >
+                {t({ en: 'Skip to Feed', ur: 'فیڈ پر جائیں' })}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -198,7 +217,11 @@ export default function FacebookApp({ onExit }) {
             </div>
 
             {/* Feed Scroll */}
-            <div className="flex-1 overflow-y-auto space-y-2 p-2">
+            <div
+              className={`flex-1 overflow-y-auto space-y-2 p-2 ${
+                activeLesson ? 'pb-60' : ''
+              }`}
+            >
               {/* Status Box */}
               <div className="bg-white rounded-xl p-3 shadow-sm border border-slate-200/80">
                 <div className="flex items-center gap-3">
@@ -313,7 +336,7 @@ export default function FacebookApp({ onExit }) {
             </button>
           </div>
 
-          <div className="p-4 flex-1 flex flex-col">
+          <div className={`p-4 flex-1 flex flex-col ${activeLesson ? 'pb-60' : ''}`}>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-3xl">🧓</span>
               <div>
@@ -356,7 +379,11 @@ export default function FacebookApp({ onExit }) {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto divide-y divide-slate-100">
+          <div
+            className={`flex-1 overflow-y-auto divide-y divide-slate-100 ${
+              activeLesson ? 'pb-60' : ''
+            }`}
+          >
             {messages.map((m) => (
               <div
                 key={m.id}
