@@ -45,11 +45,11 @@ export default function WebHomeScreen() {
 
   return (
     <div
-      className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-8 select-none"
+      className="w-full max-w-7xl mx-auto px-3 sm:px-6 py-4 sm:py-8 space-y-6 sm:space-y-8 select-none"
       dir={lang === 'ur' ? 'rtl' : 'ltr'}
     >
       {/* Hero Welcome Banner */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 p-6 sm:p-8 shadow-2xl">
+      <section className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-500/30 p-4 sm:p-8 shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 text-xs font-bold">
@@ -62,7 +62,7 @@ export default function WebHomeScreen() {
             </div>
 
             <h1
-              className={`text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight ${
+              className={`text-xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight ${
                 lang === 'ur' ? 'font-urdu' : ''
               }`}
             >
@@ -266,7 +266,7 @@ export default function WebHomeScreen() {
                     title={lang === 'ur' ? 'ایپ خود چلائیں' : 'Open app freely'}
                   >
                     <Compass className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">
+                    <span className="inline">
                       {lang === 'ur' ? 'کھولیں' : 'Open'}
                     </span>
                   </button>

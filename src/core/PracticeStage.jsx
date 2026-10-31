@@ -79,9 +79,9 @@ export default function PracticeStage() {
   const AppComponent = currentApp?.Component;
   const AppIcon = currentApp?.Icon;
 
-  const isUnder500 = viewportWidth < 500;
+  const isMobile = viewportWidth < 640;
   // Auto-scale formula: min(1, (100vh - 140px) / 900)
-  const phoneScale = isUnder500
+  const phoneScale = isMobile
     ? 1
     : Math.min(1, Math.max(0.35, (viewportHeight - 140) / 900));
 
@@ -346,7 +346,7 @@ export default function PracticeStage() {
 
       {/* Slim Top Bar */}
       <header
-        className="h-16 shrink-0 bg-[#FAF7F2] border-b border-stone-200/90 px-4 sm:px-6 flex items-center justify-between z-30"
+        className="h-14 sm:h-16 shrink-0 bg-[#FAF7F2] border-b border-stone-200/90 px-3 sm:px-6 flex items-center justify-between z-30"
         dir={lang === 'ur' ? 'rtl' : 'ltr'}
       >
         {/* Left: "← Back to dashboard" button (48px high) & Logo */}
@@ -354,7 +354,7 @@ export default function PracticeStage() {
           <button
             type="button"
             onClick={handleBackToDashboard}
-            className="h-[48px] min-h-[48px] px-4 rounded-2xl bg-white hover:bg-stone-100 border border-stone-300 text-stone-800 text-xs sm:text-sm font-bold flex items-center gap-2 shadow-sm transition active:scale-95 cursor-pointer"
+            className="h-10 sm:h-[48px] px-3 sm:px-4 rounded-xl sm:rounded-2xl bg-white hover:bg-stone-100 border border-stone-300 text-stone-800 text-xs sm:text-sm font-bold flex items-center gap-1.5 sm:gap-2 shadow-sm transition active:scale-95 cursor-pointer"
             title="Return to dashboard"
           >
             <ArrowLeft
@@ -413,7 +413,7 @@ export default function PracticeStage() {
       </header>
 
       {/* Main Two-Column Layout (Desktop >= 1024px) / Centred Phone (Tablet & Mobile) */}
-      <main className="flex-1 w-full max-w-[1000px] mx-auto px-4 py-2 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-6 overflow-hidden relative">
+      <main className="flex-1 w-full max-w-[1000px] mx-auto px-0 sm:px-4 py-0 sm:py-2 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-1 sm:gap-6 overflow-hidden relative">
         {/* Tablet / Mobile (< 1024px): Collapsible "Steps" Chip above Phone */}
         <div className="lg:hidden w-full flex justify-center shrink-0 py-1">
           <button
@@ -452,7 +452,7 @@ export default function PracticeStage() {
               isExiting ? 'stage-phone-exit' : 'stage-phone-enter'
             }`}
             style={
-              isUnder500
+              isMobile
                 ? { width: '100%', height: '100%' }
                 : {
                     width: 414,
@@ -463,12 +463,12 @@ export default function PracticeStage() {
             {/* Phone Frame: 390x844 inner, 44px outer radius, 12px dark bezel */}
             <div
               className={`relative bg-black flex flex-col overflow-hidden ${
-                isUnder500
+                isMobile
                   ? 'w-full h-full rounded-none border-none shadow-none'
                   : 'w-[414px] h-[868px] rounded-[44px] border-[12px] border-slate-900 shadow-[0_25px_60px_rgba(0,0,0,0.35),0_0_0_1px_rgba(0,0,0,0.08)]'
               }`}
               style={
-                isUnder500
+                isMobile
                   ? {}
                   : {
                       transform: `scale(${phoneScale})`,
@@ -477,7 +477,7 @@ export default function PracticeStage() {
               }
             >
               {/* Phone Status Bar with Dynamic Island / Notch */}
-              <div className="h-11 w-full bg-slate-900/95 text-white flex items-center justify-between px-6 z-40 shrink-0 text-xs font-semibold select-none border-b border-white/5">
+              <div className="h-8 sm:h-11 w-full bg-slate-900/95 text-white flex items-center justify-between px-4 sm:px-6 z-40 shrink-0 text-[10px] sm:text-xs font-semibold select-none border-b border-white/5">
                 <span className="font-mono">{time}</span>
 
                 {/* Dynamic Island Pill */}
@@ -493,7 +493,7 @@ export default function PracticeStage() {
               </div>
 
               {/* Practice Mode Small Badge */}
-              <div className="absolute top-12 right-3 z-30 pointer-events-none bg-amber-500/85 backdrop-blur text-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+              <div className="absolute top-9 sm:top-12 right-2 sm:right-3 z-30 pointer-events-none bg-amber-500/85 backdrop-blur text-black text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
                 {lang === 'ur' ? 'پریکٹس' : 'Practice'}
               </div>
 
@@ -516,7 +516,7 @@ export default function PracticeStage() {
               </div>
 
               {/* Bottom System Navigation Bar Overlay */}
-              <div className="h-14 w-full bg-slate-900 text-slate-400 flex flex-col justify-between px-8 py-1.5 z-40 shrink-0 border-t border-slate-800">
+              <div className="h-11 sm:h-14 w-full bg-slate-900 text-slate-400 flex flex-col justify-between px-4 sm:px-8 py-1 sm:py-1.5 z-40 shrink-0 border-t border-slate-800">
                 <div className="flex items-center justify-around w-full">
                   {/* Back button */}
                   <button
